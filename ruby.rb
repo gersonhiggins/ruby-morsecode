@@ -1,43 +1,37 @@
-morse = '.-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ...'
+def morse_to_array(string)
+  string += ' '
+  output = []
+  word = ''
+  string.each_char do |char|
+    if ['.', '-'].include?(char)
+      word += char
+    elsif char == ' '
+      output.push(word)
+      word = ''
+    end
+  end
+  output
+end
 
 def decode_morse(string)
   alphabet_morse = ['.-', '-...', '-.-.', '-..', '.', '..-.', '--.', '....', '..', '.---', '-.-',
                     '.-..', '--', '-.', '---', '.--.', '--.-', '.-.', '...', '-', '..-', '...-',
                     '.--', '-..-', '-.--', '--..']
-  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-              'u', 'v', 'w', 'x', 'y', 'z']
-  string += ' '
-  output = []
-  word = ''
+  alphabet = %w[a b c d e f g h i j k l m n o p q r s t u v w x y z]
+  output = morse_to_array(string)
   decoded_message = []
-  for i in 0..(string.length - 1) do
-    if string[i] == '.' || string[i] == '-'
-      word += string[i]
-    end
-    if string[i] == ' '
-      output.push(word)
-      word = ''
-      i += 1
-    end
+  output.each_with_index do |_, i|
+    output.delete_at(i) if output[i] == '' && output[i + 1] == ''
   end
-  for i in 0..(output.length - 1) do
-    if output[i] == '' && output[i + 1] == ''
-      output.delete_at(i)
-    end
-  end
-  for i in 0..(output.length - 1) do
-    for j in 0..(alphabet_morse.length - 1) do
-      if output[i] == alphabet_morse[j]
-        decoded_message.push(alphabet[j])
-        j = alphabet_morse.length
-      end
-      end
-    if output[i] == ''
+  output.each do |output_char|
+    if output_char.empty?
       decoded_message.push(' ')
+    elsif alphabet_morse.include?(output_char)
+      decoded_message.push(alphabet[alphabet_morse.index(output_char)])
     end
   end
-  decoded_message.join('').upcase
+  decoded_message.join.upcase
 end
-
+morse = '.-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ...'
 output = decode_morse(morse)
 puts output.inspect
