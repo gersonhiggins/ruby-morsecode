@@ -33,5 +33,5 @@ def decode_morse(string)
   decoded_message.join.upcase
 end
 morse = '.-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ...'
-output = decode_morse(morse)
-puts output.inspect
+decode = decode_morse(morse)
+puts decode.inspect
